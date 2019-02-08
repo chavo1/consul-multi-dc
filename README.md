@@ -13,9 +13,8 @@ CONSUL_VERSION = '1.4.0'
 ENVCONSUL_VERSION = '0.7.3'
 CONSUL_TEMPLATE_VERSION = '0.19.5'
 ```
-#### I to populate the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page as follow
+#### I to changed the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page with [consul-template](https://github.com/hashicorp/consul-template)
 
-- With [consul-template](https://github.com/hashicorp/consul-template) - Just comment 'envconsul.sh' and 'call_nginx.sh' under the Client section.
 ### Now we are ready to start, just follow the steps:
 
 - Clone the repo
