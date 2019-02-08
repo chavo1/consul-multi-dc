@@ -22,7 +22,7 @@ which unzip socat jq dig route vim curl &>/dev/null || {
 sudo mkdir -p /vagrant/pkg
 
 which consul || {
-    # consul file exist.
+    # check if consul file exist.
     CHECKFILE="/vagrant/pkg/consul_${CONSUL_VERSION}_linux_amd64.zip"
     if [ ! -f "$CHECKFILE" ]; then
         pushd /vagrant/pkg
@@ -44,76 +44,61 @@ set -x
 ###########################
 # Starting consul servers #
 ###########################
+# check if we are on a server
+  IS_SERVER=false
 
-# for i in $(seq 21 29); do nc -v -n -z -w 1 192.168.0.$i 443; done
-
-
-# y="10.10.10."
-
-# for i in 10; do
-#     if [ "$IPs" == "$y$i" ]; then
-#         echo "all good"
-#     else
-#         echo "error"
-#     fi
-# done
-
-
-for n in {1..3}; do
-    echo $n
- 
-if [ $IPs == 192.168.56.5$n ]; then
-LAN=',
-  "retry_join": [
-    "192.168.56.51",
-    "192.168.56.52",
-    "192.168.56.53"
-  ]'
-  WAN=''
-  dc=dc1
-  server=${SERVER_COUNT_DC1}
-
-elif [[ $IPs == 192.168.57.5$n ]]; then
-dc=dc2
-LAN=',
-  "retry_join": [
-    "192.168.57.51",
-    "192.168.57.52",
-    "192.168.57.53"
-  ]'
-WAN=',
-  "retry_join_wan": [
-    "192.168.56.51",
-    "192.168.56.52",
-    "192.168.56.53"
-  ]'
-server=${SERVER_COUNT_DC2}
-
-elif [[ $IPs == 192.168.56.6$n ]]; then
-LAN=''
-  dc=dc1
-  client=${CLIENT_COUNT_DC1}
-  LAN=',
-  "retry_join": [
-    "192.168.56.51",
-    "192.168.56.52",
-    "192.168.56.53"
-  ]'
-
-elif [[ $IPs == 192.168.57.6$n ]]; then
-dc=dc2
-LAN=',
-  "retry_join": [
-    "192.168.57.51",
-    "192.168.57.52",
-    "192.168.57.53"
-  ]'
-client=${CLIENT_COUNT_DC2}
+if [[ $HOST =~ server ]]; then
+# if the name contain server we are there
+  IS_SERVER=true
 
 fi
+# check DC
+if [[ $IPs =~ 192.168.56 ]]; then # if 192.168.56 it is dc1
 
-done
+  dc=dc1
+  LAN=',
+    "retry_join": [
+      "192.168.56.51",
+      "192.168.56.52",
+      "192.168.56.53"
+    ]'
+  if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc1 server
 
+    server=${SERVER_COUNT_DC1}
+    WAN=',
+      "retry_join_wan": [
+        "192.168.57.51",
+        "192.168.57.52",
+        "192.168.57.53"
+      ]'
+  fi
+
+
+elif [[ $IPs =~ 192.168.57 ]]; then  # if 192.168.57 it is dc2
+  
+  dc=dc2
+  LAN=',
+    "retry_join": [
+      "192.168.57.51",
+      "192.168.57.52",
+      "192.168.57.53"
+    ]'
+    if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc2 server
+    
+      server=${SERVER_COUNT_DC2}
+      WAN=',
+        "retry_join_wan": [
+          "192.168.56.51",
+          "192.168.56.52",
+          "192.168.56.53"
+        ]'
+    fi
+
+else 
+  # In this case we not need else but after else must some command
+  echo "Hello"
+fi
+# Creating consul configuration files - they are almost the same so - just a few variables
 if [[ $HOST =~ server ]]; then
 sudo cat <<EOF > /etc/consul.d/config.json
 {
@@ -141,12 +126,11 @@ sudo cat <<EOF > /etc/consul.d/config.json
 }
 EOF
 fi
-
+# starting consul agents
 if [[ $HOST =~ server ]]; then
-
+    # starting consul servers
     consul agent -server -ui -advertise $IPs -config-dir=/etc/consul.d > /vagrant/consul_logs/$HOST.log & 
-
-else
+else # starting consul clients
     consul agent -ui -advertise $IPs -config-dir=/etc/consul.d > /vagrant/consul_logs/$HOST.log & 
 
 fi
