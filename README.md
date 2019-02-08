@@ -13,7 +13,7 @@ CONSUL_VERSION = '1.4.0'
 ENVCONSUL_VERSION = '0.7.3'
 CONSUL_TEMPLATE_VERSION = '0.19.5'
 ```
-#### Additionally there is 3 way to populate the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page:
+#### I to populate the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page as follow
 ```
 - With [consul-template](https://github.com/hashicorp/consul-template) - Just comment 'envconsul.sh' and 'call_nginx.sh' under the Client section.
 ```
