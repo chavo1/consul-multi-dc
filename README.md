@@ -13,7 +13,7 @@ CONSUL_VERSION = '1.4.0'
 ENVCONSUL_VERSION = '0.7.3'
 CONSUL_TEMPLATE_VERSION = '0.19.5'
 ```
-#### I to changed the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page with [consul-template](https://github.com/hashicorp/consul-template)
+#### I have changed the [NGINX](https://www.nginx.com/resources/wiki/) Welcome page with [consul-template](https://github.com/hashicorp/consul-template)
 
 ### Now we are ready to start, just follow the steps:
 
