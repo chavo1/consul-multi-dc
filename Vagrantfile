@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
 
     1.upto(CLIENT_COUNT) do |n|
       config.vm.define "consul-#{a}-client0#{n}" do |client|
-        client.vm.hostname = "consul-d#{a}-client0#{n}"
+        client.vm.hostname = "consul-#{a}-client0#{n}"
         client.vm.network "private_network", ip: "192.168.#{55+b}.#{60+n}"
         client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/consul.sh", env: {"CONSUL_VERSION" => CONSUL_VERSION, "CLIENT_COUNT" => CLIENT_COUNT}
         client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/consul-template.sh", env: {"CONSUL_TEMPLATE_VERSION" => CONSUL_TEMPLATE_VERSION}
