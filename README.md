@@ -27,8 +27,13 @@ cd consul-multi-dc
 vagrant up
 ```
 #### Check if Consul UI is available on the following addresses:
+DC1
 - Servers: http://192.168.56.51:8500 etc.
 - Clients: http://192.168.56.61:8500 etc.
 - NGINX: http://192.168.56.61 etc.
+DC2
+- Servers: http://192.168.57.51:8500 etc.
+- Clients: http://192.168.57.61:8500 etc.
+- NGINX: http://192.168.57.61 etc.
 
 
