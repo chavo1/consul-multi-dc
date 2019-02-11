@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-SERVER_COUNT_DC1=${SERVER_COUNT_DC1}
-SERVER_COUNT_DC2=${SERVER_COUNT_DC2}
-CLIENT_COUNT_DC1=${CLIENT_COUNT_DC1}
-CLIENT_COUNT_DC2=${CLIENT_COUNT_DC2}
+SERVER_COUNT=${SERVER_COUNT}
+CLIENT_COUNT=${CLIENT_COUNT}
 CONSUL_VERSION=${CONSUL_VERSION}
 IPs=$(hostname -I | cut -f2 -d' ')
 HOST=$(hostname)
@@ -64,7 +62,7 @@ if [[ $IPs =~ 192.168.56 ]]; then # if 192.168.56 it is dc1
     ]'
   if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc1 server
 
-    server=${SERVER_COUNT_DC1}
+    server=${SERVER_COUNT}
     WAN=',
       "retry_join_wan": [
         "192.168.57.51",
@@ -85,7 +83,7 @@ elif [[ $IPs =~ 192.168.57 ]]; then  # if 192.168.57 it is dc2
     ]'
     if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc2 server
     
-      server=${SERVER_COUNT_DC2}
+      server=${SERVER_COUNT}
       WAN=',
         "retry_join_wan": [
           "192.168.56.51",
