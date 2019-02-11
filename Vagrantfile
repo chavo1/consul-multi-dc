@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
       v.cpus = 2
     
     end
-    # 'a' count the DCs 'b' count the IPs (increase with 1)
+    # 'a' count the DCs 'b' count the IPs (increase with 1) // it could be more simple with 'n' but will leave it like that for example
     ["dc1", "dc2"].to_enum.with_index(1).each do |a, b|
 
     1.upto(SERVER_COUNT) do |n|
