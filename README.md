@@ -8,7 +8,7 @@
 - Since [Consul](https://www.consul.io/) require at least 3 servers in order to survive 1 server failure. Quorum requires at least (n/2)+1 members. If we need more servers, clients or a specific Consul version - it is simple as just change the numbers in the Vagrantfile
 ```
 SERVER_COUNT = 3
-CLIENT_COUNT = 
+CLIENT_COUNT = 1
 CONSUL_VERSION = '1.4.0'
 ENVCONSUL_VERSION = '0.7.3'
 CONSUL_TEMPLATE_VERSION = '0.19.5'
