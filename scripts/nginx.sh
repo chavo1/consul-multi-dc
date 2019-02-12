@@ -45,7 +45,7 @@ sudo mkdir -p /etc/consul.d
 # create script to check nging welcome page
 cat << EOF > /tmp/welcome.sh
 #!/usr/bin/env bash
-curl 127.0.0.1:80 | grep "Welcome to nginx from ${HOST}!"
+curl ${HOST}:80 | grep "Welcome to nginx from ${HOST}!"
 EOF
 sudo chmod +x /tmp/welcome.sh
 
@@ -63,7 +63,7 @@ cat << EOF > /etc/consul.d/web.json
       {
           "id": "nginx_http_check",
           "name": "nginx",
-          "http": "http://127.0.0.1:80",
+          "http": "http://${HOST}:80",
           "tls_skip_verify": false,
           "method": "GET",
           "interval": "10s",

@@ -3,7 +3,7 @@
 i=0 # set counter to 0
 while true  # infinite loop
 do
-    curl -o /vagrant/consul_logs/loop.log -s web.service.consul  # silent curl request to site
+    curl -o /vagrant/consul_logs/loop.log -s web.service.consul || curl -o /vagrant/consul_logs/loop.log -s web.query.consul & # silent curl request to site
     if [ $? -ne 0 ]
     then
         # curl didn't return 0 - failure

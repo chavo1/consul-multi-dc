@@ -30,6 +30,7 @@ Vagrant.configure(2) do |config|
         client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/consul-template.sh", env: {"CONSUL_TEMPLATE_VERSION" => CONSUL_TEMPLATE_VERSION}
         client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/kv.sh"
         client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/nginx.sh"
+        client.vm.provision "shell",inline: "cd /vagrant ; bash scripts/dns.sh"
       
       end
     end

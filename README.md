@@ -34,5 +34,37 @@ vagrant up
 - Servers: http://192.168.57.51:8500 etc.
 - Clients: http://192.168.57.61:8500 etc.
 - NGINX: http://192.168.57.61 etc.
+#### Test with infinite_loop.sh
+```
+vagrant ssh consul-dc2-client01
+sudo su -
+/vagrant/scripts/infinite_loop.sh # must be stopped manually
+```
+#### open another console
+```
+vagrant ssh consul-dc2-client01
+sudo su -
+curl \
+    --request POST \
+    --data \
+'{
+  "Name": "web",
+  "Service": {
+    "Service": "web",
+    "Failover": {
+      "NearestN": 2,
+      "Datacenters": ["dc1", "dc2"]
+    }
+  }
+}' http://127.0.0.1:8500/v1/query
+systemctl stop nginx
+```
+#### the last command will stop nginx service and Failover will occurs (traffic will be redirected to the  dc1). In query.txt you can find more queries. To switch again to dc1 just start nginx.
+```
+systemctl start nginx
+```
+
+
+
 
 
