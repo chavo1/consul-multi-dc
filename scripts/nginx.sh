@@ -27,16 +27,14 @@ elif  which consul-template >/dev/null; then
 set -x
 export HOST=$HOST
 consul-template -config=/vagrant/templates/config.hcl > /vagrant/consul_logs/template_$HOST.log & 
-set +x
+
 
 else
   
   # Updating nginx start page
-set -x
+
 rm /var/www/html/index.nginx-debian.html
 sudo curl -s 127.0.0.1:8500/v1/kv/$HOST/nginx?raw > /var/www/html/index.nginx-debian.html
-
-set +x
 
 fi
 
@@ -44,35 +42,54 @@ service nginx start
 
 sudo mkdir -p /etc/consul.d
 
+# create script to check nging welcome page
+cat << EOF > /tmp/welcome.sh
+#!/usr/bin/env bash
+curl 127.0.0.1:80 | grep "Welcome to nginx from ${HOST}!"
+EOF
+sudo chmod +x /tmp/welcome.sh
+
 #####################
 # Register services #
 #####################
-sudo cat <<EOF > /etc/consul.d/web.json
+cat << EOF > /etc/consul.d/web.json
 {
-  "service": {
-    "name": "web",
-    "tags": ["$HOST"],
-    "port": 80,
-  "check": {
-    "args": ["curl", "127.0.0.1"],
-    "interval": "3s"
-    }
-  }
+    "service": {
+        "name": "web",
+        "tags": ["${HOST}"],
+        "port": 80
+    },
+    "checks": [
+      {
+          "id": "nginx_http_check",
+          "name": "nginx",
+          "http": "http://127.0.0.1:80",
+          "tls_skip_verify": false,
+          "method": "GET",
+          "interval": "10s",
+          "timeout": "1s"
+      },
+      {
+          "id": "tcp_check",
+          "name": "TCP on port 80",
+          "tcp": "127.0.0.1:80",
+          "interval": "10s",
+          "timeout": "1s"
+      },
+      {
+          "id": "script_check",
+          "name": "check_welcome_page",
+          "args": ["/tmp/welcome.sh", "-limit", "256MB"],
+          "interval": "10s",
+          "timeout": "1s"
+      }
+   ]
 }
 EOF
 
-sudo cat <<EOF > /etc/consul.d/http.json
-{
-  "check": {
-    "id": "http",
-    "name": "http TCP on port 80",
-    "tcp": "127.0.0.1:80",
-    "interval": "10s",
-    "timeout": "1s"
-  }
-}
-EOF
 
 consul reload
 
 consul members
+
+set +x
