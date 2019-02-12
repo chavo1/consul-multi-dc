@@ -59,7 +59,7 @@ curl \
 }' http://127.0.0.1:8500/v1/query
 systemctl stop nginx
 ```
-#### the last command will stop nginx service and Failover will occur (traffic will be redirected to the  dc1). In query.txt you can find more queries. To switch again to dc1 just start nginx.
+#### The last command will stop nginx service and Failover will occur (traffic will be redirected to the  dc1). In query.txt you can find more queries. To switch again to dc1 just start nginx.
 ```
 systemctl start nginx
 ```
