@@ -62,7 +62,9 @@ systemctl stop nginx
 #### The last command will stop nginx service and Failover will occur (traffic will be redirected to the  dc1). In query.txt you can find more queries. To switch again to dc1 just start nginx.
 ```
 systemctl start nginx
+tail -f /vagrant/conul_log/loop.log
 ```
+#### In loop.log you will be able to see redirection in real time
 
 
 
