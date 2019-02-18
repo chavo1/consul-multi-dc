@@ -79,7 +79,7 @@ vagrant ssh consul-dc2-server01
 consul snapshot inspect /vagrant/snapshot/backup.snap # this will show the info about snapshot
 consul snapshot restore /vagrant/snapshot/backup.snap # this will restore the snapshot on the second server
 ```
-- Open the KV Store of consul-dc2-server01 and for the restored data
+- Open the KV Store of consul-dc2-server01 and check for the restored data
 
 
 
