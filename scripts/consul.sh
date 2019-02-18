@@ -3,6 +3,7 @@
 SERVER_COUNT=${SERVER_COUNT}
 CLIENT_COUNT=${CLIENT_COUNT}
 CONSUL_VERSION=${CONSUL_VERSION}
+WAN=${WAN}
 IPs=$(hostname -I | cut -f2 -d' ')
 HOST=$(hostname)
 
@@ -63,12 +64,16 @@ if [[ $IPs =~ 192.168.56 ]]; then # if 192.168.56 it is dc1
   if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc1 server
 
     server=${SERVER_COUNT}
-    WAN=',
-      "retry_join_wan": [
-        "192.168.57.51",
-        "192.168.57.52",
-        "192.168.57.53"
-      ]'
+    if [ "${WAN}" = true ] ; then # confirm we need WAN
+      WAN=',
+        "retry_join_wan": [
+          "192.168.57.51",
+          "192.168.57.52",
+          "192.168.57.53"
+        ]'
+    else
+      WAN=''
+    fi
   fi
 
 
@@ -84,12 +89,16 @@ elif [[ $IPs =~ 192.168.57 ]]; then  # if 192.168.57 it is dc2
     if [ "$IS_SERVER" = true ] ; then # confirm if we are on dc2 server
     
       server=${SERVER_COUNT}
-      WAN=',
-        "retry_join_wan": [
-          "192.168.56.51",
-          "192.168.56.52",
-          "192.168.56.53"
-        ]'
+      if [ "${WAN}" = true ] ; then # confirm we need WAN
+        WAN=',
+          "retry_join_wan": [
+            "192.168.56.51",
+            "192.168.56.52",
+            "192.168.56.53"
+          ]'
+      else
+        WAN=''
+      fi
     fi
 
 else 
@@ -136,4 +145,3 @@ set +x
 sleep 5
 
 consul members
-
