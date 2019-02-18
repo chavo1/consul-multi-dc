@@ -2,7 +2,7 @@ SERVER_COUNT = 1
 CLIENT_COUNT = 1
 CONSUL_VERSION = '1.4.2'
 CONSUL_TEMPLATE_VERSION = '0.19.5'
-WAN = false
+WAN = true
 
 Vagrant.configure(2) do |config|
     config.vm.box = "chavo1/xenial64base"
