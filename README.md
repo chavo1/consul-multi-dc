@@ -73,7 +73,7 @@ vagrant ssh consul-dc1-server01
 mkdir -p /vagrant/snapshot
 consul snapshot save /vagrant/snapshot/backup.snap
 ```
-- Login to the client in second DC
+- Login to the server in second DC
 ```
 vagrant ssh consul-dc2-server01
 consul snapshot inspect /vagrant/snapshot/backup.snap # this will show the info about snapshot
