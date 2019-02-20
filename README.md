@@ -67,7 +67,7 @@ tail -f /vagrant/conul_log/loop.log
 #### In loop.log you will be able to see redirection in real time
 
 #### Create and restore the snapshot manually
-- From Vagrantfile change the WAN to false - this will create to independent DCs
+- From Vagrantfile change the WAN to false - this will create two independent DCs
 ```
 vagrant ssh consul-dc1-server01
 mkdir -p /vagrant/snapshot
@@ -81,10 +81,3 @@ consul snapshot restore /vagrant/snapshot/backup.snap # this will restore the sn
 ```
 - Open the KV Store of consul-dc2-server01 and check for the restored data
 - More information could be found [HERE](https://www.consul.io/docs/commands/snapshot.htmlwihch consul)
-
-
-
-
-
-
-
